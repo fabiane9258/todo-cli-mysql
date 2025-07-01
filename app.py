@@ -1,14 +1,19 @@
-from flask import Flask, render_template, request, redirect   #➡️ Import Flask to create the app, and render_template to return HTML files from the templates/ folder.
-from todo import list_tasks, add_task      #➡️ Reuse the list_tasks() function you already wrote to fetch tasks from the database.
-from todo import delete_task
-
+from flask import Flask, render_template, request, redirect
+from todo import (
+    list_tasks,
+    add_task,
+    delete_task,
+    toggle_task,
+    calculate_progress
+)
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     tasks = list_tasks()
-    return render_template('index.html', tasks=tasks)
+    progress = calculate_progress()
+    return render_template('index.html', tasks=tasks, progress=progress)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -20,6 +25,11 @@ def add():
 def delete(id):
     delete_task(id)
     return redirect('/')
-    
-if __name__ == '__main__':       #➡️ Run the app in debug mode so you get error messages while developing.
+
+@app.route('/toggle/<int:id>', methods=['POST'])
+def toggle(id):
+    toggle_task(id)
+    return redirect('/')
+
+if __name__ == '__main__':
     app.run(debug=True)
