@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📝 To-Do App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f0f4f8, #d9e4f5);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2196f3;
+        }
+
+        button {
+            padding: 0.75rem 1.2rem;
+            background-color: #2196f3;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1976d2;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f9f9f9;
+            padding: 1rem;
+            margin-bottom: 10px;
+            border-left: 6px solid #2196f3;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .delete-form {
+            margin: 0;
+        }
+
+        .delete-form button {
+            background-color: #e74c3c;
+        }
+
+        .delete-form button:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+            form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 My To-Do List</h1>
+
+        <form method="POST" action="/add" autocomplete="off">
+            <input type="text" name="description" placeholder="Add a task..." required>
+            <button type="submit">➕ Add</button>
+        </form>
+
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    {{ task[1] }}
+                    <form method="POST" action="/delete/{{ task[0] }}" class="delete-form">
+                        <button type="submit">🗑️</button>
+                    </form>
+                </li>
+            {% else %}
+                <li style="text-align:center;">No tasks yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
